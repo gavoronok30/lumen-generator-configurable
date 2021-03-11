@@ -1,6 +1,6 @@
 {
     "name": "gavoronok30/laravel-generator-configurable",
-    "description": "lumen code generation",
+    "description": "laravel code generation",
     "type": "library",
     "license": "LGPL-3.0-or-later",
     "authors": [

@@ -8,7 +8,6 @@ use Gavoronok30\LaravelGeneratorConfigurable\GeneratorServiceInterface;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Lumen\Routing\Router;
 
 /**
  * Class GeneratorServiceProvider
@@ -135,13 +134,16 @@ class GeneratorServiceProvider extends ServiceProvider
             'namespace' => 'Gavoronok30\LaravelGeneratorConfigurable\Http\Controllers',
         ];
 
+        $controllerPrefix = get_class($this->app) == 'Laravel\Lumen\Application'
+            ? 'Lumen' : 'Laravel';
+
         $this->app->router->group(
             $option,
-            function (Router $router) {
+            function ($router) use ($controllerPrefix) {
                 $router->get(
                     '/',
                     [
-                        'uses' => 'GeneratorController@page',
+                        'uses' => $controllerPrefix . 'GeneratorController@page',
                         'as' => 'generator.page',
                     ]
                 );
@@ -150,11 +152,11 @@ class GeneratorServiceProvider extends ServiceProvider
 
         $this->app->router->group(
             $option,
-            function (Router $router) {
+            function ($router) use ($controllerPrefix) {
                 $router->post(
                     'check',
                     [
-                        'uses' => 'GeneratorController@check',
+                        'uses' => $controllerPrefix . 'GeneratorController@check',
                         'as' => 'generator.check',
                     ]
                 );
@@ -163,11 +165,11 @@ class GeneratorServiceProvider extends ServiceProvider
 
         $this->app->router->group(
             $option,
-            function (Router $router) {
+            function ($router) use ($controllerPrefix) {
                 $router->post(
                     'generate',
                     [
-                        'uses' => 'GeneratorController@generate',
+                        'uses' => $controllerPrefix . 'GeneratorController@generate',
                         'as' => 'generator.generate',
                     ]
                 );

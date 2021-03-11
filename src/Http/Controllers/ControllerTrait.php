@@ -6,13 +6,12 @@ use Gavoronok30\LaravelGeneratorConfigurable\GeneratorServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
-use Laravel\Lumen\Routing\Controller as BaseController;
 
 /**
- * Class GeneratorController
- * @package Gavoronok30\LaravelGeneratorConfigurable\Http\Controllers\Generator
+ * Class ControllerTrait
+ * @package Gavoronok30\LaravelGeneratorConfigurable\Http\Controllers
  */
-class GeneratorController extends BaseController
+trait ControllerTrait
 {
     /**
      * @var GeneratorServiceInterface
