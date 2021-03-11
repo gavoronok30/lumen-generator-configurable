@@ -27,9 +27,43 @@ For generate default blade templates
 ```
 php artisan generator:publish --tag=resources
 ```
-**3.** Add folder `storage/generator` to .gitignore at the root of the project
 
-**4.** Edit templates `resources/views/vendor/laravel-generator-configurable/templates`
+## Install for laravel
+
+**1.** Open file **config/app.php** and search
+```
+    'providers' => [
+        ...
+    ]
+```
+Add to section
+```
+        \Gavoronok30\LaravelGeneratorConfigurable\Providers\GeneratorServiceProvider::class,
+```
+Example
+```
+    'providers' => [
+        ...
+        \Gavoronok30\LaravelGeneratorConfigurable\Providers\GeneratorServiceProvider::class,
+    ]
+```
+
+**2.** Run commands
+
+For creating config file
+```
+php artisan vendor:publish --provider="Gavoronok30\LaravelGeneratorConfigurable\Providers\GeneratorServiceProvider" --tag=config
+```
+For generate default blade templates
+```
+php artisan vendor:publish --provider="Gavoronok30\LaravelGeneratorConfigurable\Providers\GeneratorServiceProvider" --tag=resources
+```
+
+## Continue step install for laravel or lumen
+
+**1.** Add folder `storage/generator` to .gitignore at the root of the project
+
+**2.** Edit templates `resources/views/vendor/laravel-generator-configurable/templates`
 and config file `config/generator.php`
 
 ## ENV variables
