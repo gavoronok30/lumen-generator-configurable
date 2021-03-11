@@ -1,0 +1,44 @@
+<?php
+
+namespace Gavoronok30\LaravelGeneratorConfigurable;
+
+use Gavoronok30\LaravelGeneratorConfigurable\Data\GeneratorServiceData;
+use Gavoronok30\LaravelGeneratorConfigurable\Data\GeneratorServiceDataFileRequest;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+
+/**
+ * Class GeneratorServiceRenderApiDoc
+ * @package Gavoronok30\LaravelGeneratorConfigurable
+ */
+class GeneratorServiceRenderApiDoc extends GeneratorServiceRenderAbstract
+{
+    /**
+     * @param GeneratorServiceData $data
+     * @param GeneratorServiceDataFileRequest[]|Collection $files
+     */
+    public function renderFiles(GeneratorServiceData $data, Collection $files): void
+    {
+        $entityNameText = Str::snake($data->getEntity()->getName());
+        $entityNameText = Str::ucfirst($entityNameText);
+        $entityNameText = Str::of($entityNameText)->replace('_', ' ');
+
+        $data = [
+            'data' => $data,
+            'entityName' => $data->getEntity()->getName(),
+            'entityNameText' => $entityNameText,
+            'entityFields' => $this->getFieldDataFromEntity($data),
+            'filterFields' => $data->getFilter()->getFields(),
+            'responseFields' => $this->getFieldsForResponse($data),
+            'controllerCreateFields' => $this->getFieldsForControllerCreate($data),
+            'controllerUpdateFields' => $this->getFieldsForControllerUpdate($data),
+            'sortableFields' => $this->getSortableFieldsFromEntity($data),
+        ];
+
+        $files->map(
+            function (GeneratorServiceDataFileRequest $file) use ($data) {
+                $file->setContent($this->getContent($data, $file));
+            }
+        );
+    }
+}
