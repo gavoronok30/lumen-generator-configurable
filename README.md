@@ -4,6 +4,19 @@
 ```
 $app->register(Gavoronok30\LaravelGeneratorConfigurable\Providers\GeneratorServiceProvider::class);
 ```
+Uncommented string
+```
+$app->withFacades();
+```
+Added after **$app->configure('app');**
+```
+$app->configure('generator');
+```
+If not then add
+```
+$app->configure('filesystems');
+```
+
 **2.** Run commands
 
 For creating config file

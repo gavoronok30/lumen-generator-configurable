@@ -34,12 +34,12 @@ class GeneratorServiceProvider extends ServiceProvider
     {
         $this->loadCustomCommands();
         $this->loadCustomConfig();
+        $this->loadCustomPublished();
 
         if (!Config::get('generator.enable')) {
             return;
         }
 
-        $this->loadCustomPublished();
         $this->loadCustomView();
         $this->loadCustomClasses();
         $this->loadCustomRoutes();
