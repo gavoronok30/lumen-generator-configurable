@@ -1,8 +1,9 @@
+## 
 ## Install for Lumen
 
 **1.** Open file `bootstrap/app.php` and add new service provider
 ```
-$app->register(Gavoronok30\LaravelGeneratorConfigurable\Providers\GeneratorServiceProvider::class);
+$app->register(\Gavoronok30\LaravelGeneratorConfigurable\Providers\GeneratorServiceProvider::class);
 ```
 Uncommented string
 ```
