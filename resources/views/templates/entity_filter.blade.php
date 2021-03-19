@@ -3,8 +3,6 @@
 @endphp
 namespace App\Domain\{{ $entityName }};
 
-use App\Contract\Core\FilterInterface;
-use App\Helpers\StringConvertHelper;
 use Illuminate\Http\Request;
 @foreach($useCommonForFilter as $use)
 use {{ $use }};
@@ -14,7 +12,7 @@ use {{ $use }};
  * Class {{ $entityName }}Filter
  * {{ '@' }}package App\Domain\{{ $entityName }}
  */
-class {{ $entityName }}Filter implements FilterInterface
+class {{ $entityName }}Filter
 {
 @foreach($filterFields as $field)
     /**
@@ -31,38 +29,38 @@ class {{ $entityName }}Filter implements FilterInterface
     {
         $filter = collect($request->input('filter'));
 
-        return (new self())
+        return (new self())@if(!count($filterFields)){{ ";\n" }}@else{{ "\n" }}@endif
 @foreach($filterFields as $index => $field)
 @php
 $last = ($index + 1) == count($filterFields);
 @endphp
 @switch($field->getType())
 @case('int')
-            ->set{{ \Illuminate\Support\Str::ucfirst($field->getName()) }}(StringConvertHelper::toInteger($filter->get('{{ $field->getName() }}')))@if($last);@endif
+            ->set{{ $chunk->get('ucfirst', ['text' => $field->getName()]) }}($filter->get('{{ $field->getName() }}'))@if($last);@endif
 @break
 @case('float')
-            ->set{{ \Illuminate\Support\Str::ucfirst($field->getName()) }}(StringConvertHelper::toFloat($filter->get('{{ $field->getName() }}')))@if($last);@endif
+            ->set{{ $chunk->get('ucfirst', ['text' => $field->getName()]) }}($filter->get('{{ $field->getName() }}'))@if($last);@endif
 @break
 @case('bool')
-            ->set{{ \Illuminate\Support\Str::ucfirst($field->getName()) }}(StringConvertHelper::toBoolean($filter->get('{{ $field->getName() }}'), null))@if($last);@endif
+            ->set{{ $chunk->get('ucfirst', ['text' => $field->getName()]) }}($filter->get('{{ $field->getName() }}', null))@if($last);@endif
 @break
 @case('array')
-            ->set{{ \Illuminate\Support\Str::ucfirst($field->getName()) }}(StringConvertHelper::toArray($filter->get('{{ $field->getName() }}')))@if($last);@endif
+            ->set{{ $chunk->get('ucfirst', ['text' => $field->getName()]) }}($filter->get('{{ $field->getName() }}'))@if($last);@endif
 @break
 @case('Carbon')
-            ->set{{ \Illuminate\Support\Str::ucfirst($field->getName()) }}(StringConvertHelper::toCarbonByFormat($filter->get('{{ $field->getName() }}')))@if($last);@endif
+            ->set{{ $chunk->get('ucfirst', ['text' => $field->getName()]) }}(
+                $filter->get('{{ $field->getName() }}') ?
+                    Carbon::createFromFormat($filter->get('f6From'), 'Y-m-d') : null
+            )@if($last);@endif
 @break
 @default
-            ->set{{ \Illuminate\Support\Str::ucfirst($field->getName()) }}(StringConvertHelper::toString($filter->get('{{ $field->getName() }}')))@if($last);@endif
+            ->set{{ $chunk->get('ucfirst', ['text' => $field->getName()]) }}($filter->get('{{ $field->getName() }}'))@if($last);@endif
 @endswitch
 
 @endforeach
     }
-
 @foreach($filterFields as $index => $field)
-@if($index)
 
-@endif
     /**
      * {{ '@' }}return {{ $field->getType() }}|null
      */

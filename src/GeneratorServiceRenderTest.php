@@ -14,6 +14,11 @@ use Illuminate\Support\Str;
 class GeneratorServiceRenderTest extends GeneratorServiceRenderAbstract
 {
     /**
+     * @inheritDoc
+     */
+    protected string $context = GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_TEST;
+
+    /**
      * @param GeneratorServiceData $data
      * @param GeneratorServiceDataFileRequest[]|Collection $files
      */
@@ -31,6 +36,8 @@ class GeneratorServiceRenderTest extends GeneratorServiceRenderAbstract
             'controllerUpdateFields' => $this->getFieldsForControllerUpdate($data),
             'responseFields' => $this->getFieldsForResponse($data),
         ];
+
+        $this->addExtraVariables($data);
 
         $files->map(
             function (GeneratorServiceDataFileRequest $file) use ($data) {

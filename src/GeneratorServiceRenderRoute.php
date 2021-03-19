@@ -14,6 +14,11 @@ use Illuminate\Support\Str;
 class GeneratorServiceRenderRoute extends GeneratorServiceRenderAbstract
 {
     /**
+     * @inheritDoc
+     */
+    protected string $context = GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_ROUTE;
+
+    /**
      * @param GeneratorServiceData $data
      * @param GeneratorServiceDataFileRequest[]|Collection $files
      */
@@ -25,6 +30,8 @@ class GeneratorServiceRenderRoute extends GeneratorServiceRenderAbstract
             'entityNameRouteAlias' => Str::of(Str::snake($data->getEntity()->getName()))->replace('_', '.'),
             'prefix' => $data->getRoute()->getPrefix(),
         ];
+
+        $this->addExtraVariables($data);
 
         $files->map(
             function (GeneratorServiceDataFileRequest $file) use ($data) {

@@ -5,7 +5,9 @@ namespace App\Application\{{ $entityName }};
 
 use App\Contract\Core\Command;
 use App\Contract\Core\Handler;
+@if($data->getEntity()->getDeletedAt())
 use App\Domain\{{ $entityName }}\{{ $entityName }};
+@endif
 use App\Domain\{{ $entityName }}\{{ $entityName }}RepositoryInterface;
 @if($data->getEntity()->getDeletedAt())
 use Carbon\Carbon;

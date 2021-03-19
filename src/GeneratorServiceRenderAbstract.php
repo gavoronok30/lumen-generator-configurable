@@ -2,6 +2,7 @@
 
 namespace Gavoronok30\LaravelGeneratorConfigurable;
 
+use Exception;
 use Gavoronok30\LaravelGeneratorConfigurable\Data\GeneratorServiceData;
 use Gavoronok30\LaravelGeneratorConfigurable\Data\GeneratorServiceDataEntity;
 use Gavoronok30\LaravelGeneratorConfigurable\Data\GeneratorServiceDataEntityRelation;
@@ -9,6 +10,8 @@ use Gavoronok30\LaravelGeneratorConfigurable\Data\GeneratorServiceDataFieldData;
 use Gavoronok30\LaravelGeneratorConfigurable\Data\GeneratorServiceDataFileRequest;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
+use ReflectionClass;
 
 /**
  * Class GeneratorServiceRenderAbstract
@@ -16,6 +19,10 @@ use Illuminate\Support\Facades\Config;
  */
 abstract class GeneratorServiceRenderAbstract
 {
+    /**
+     * @var string
+     */
+    protected string $context = '';
     /**
      * @var string
      */
@@ -36,13 +43,20 @@ abstract class GeneratorServiceRenderAbstract
      * @var Collection|null
      */
     private ?Collection $dataControllerUpdateFields = null;
+    /**
+     * @var GeneratorServiceChunk
+     */
+    private GeneratorServiceChunk $generatorServiceChunk;
 
     /**
      * GeneratorServiceGenerate constructor.
+     * @param GeneratorServiceChunk $generatorServiceChunk
      */
-    public function __construct()
-    {
+    public function __construct(
+        GeneratorServiceChunk $generatorServiceChunk
+    ) {
         $this->folderTemplates = $this->config('generator.templates');
+        $this->generatorServiceChunk = $generatorServiceChunk;
     }
 
     /**
@@ -115,6 +129,55 @@ abstract class GeneratorServiceRenderAbstract
         }
 
         $collection->push($value);
+    }
+
+    /**
+     * @param array $data
+     * @noinspection PhpDocMissingThrowsInspection
+     */
+    protected function addExtraVariables(array &$data): void
+    {
+        $data['chunk'] = $this->generatorServiceChunk;
+
+        $this->addExtraVariablesFromCustomClass($data);
+    }
+
+    /**
+     * @param array $data
+     * @noinspection PhpDocMissingThrowsInspection
+     */
+    protected function addExtraVariablesFromCustomClass(array &$data): void
+    {
+        $setting = 'generator.variables.' . $this->context;
+        if (!$this->context || !$this->config($setting)) {
+            return;
+        }
+
+        try {
+            $class = new ReflectionClass($this->config($setting));
+        } catch (Exception $e) {
+            throw new Exception(
+                sprintf(
+                    'Generator: callback class "%s" not found in setting "%s"',
+                    $this->config($setting),
+                    $setting
+                )
+            );
+        }
+
+        $classObject = $class->newInstance();
+
+        foreach ($class->getMethods() as $method) {
+            if (!$method->isPublic()) {
+                continue;
+            }
+
+            $key = sprintf(
+                'custom%s',
+                Str::ucfirst($method->getName())
+            );
+            $data[$key] = $method->invoke($classObject, $data);
+        }
     }
 
     /**

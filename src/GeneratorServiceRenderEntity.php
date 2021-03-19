@@ -16,6 +16,11 @@ use Illuminate\Support\Str;
 class GeneratorServiceRenderEntity extends GeneratorServiceRenderAbstract
 {
     /**
+     * @inheritDoc
+     */
+    protected string $context = GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_ENTITY;
+
+    /**
      * @param GeneratorServiceData $data
      * @param GeneratorServiceDataFileRequest[]|Collection $files
      */
@@ -39,6 +44,8 @@ class GeneratorServiceRenderEntity extends GeneratorServiceRenderAbstract
             'useCommonForFilter' => $this->getFilterUseCommonClasses($data->getFilter()),
             'relationFields' => $this->getRelationFieldsFromEntity($data->getEntity()),
         ];
+
+        $this->addExtraVariables($data);
 
         $files->map(
             function (GeneratorServiceDataFileRequest $file) use ($data) {

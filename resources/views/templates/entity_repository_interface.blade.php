@@ -1,6 +1,5 @@
 namespace App\Domain\{{ $entityName }};
 
-use App\Contract\Core\FilterInterface;
 use App\Contract\Core\PaginationInterface;
 use App\Contract\Core\SortingInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -14,13 +13,13 @@ use Illuminate\Database\Eloquent\Model;
 interface {{ $entityName }}RepositoryInterface
 {
     /**
-     * {{ '@' }}param {{ $entityName }}Filter|FilterInterface $filter
+     * {{ '@' }}param {{ $entityName }}Filter $filter
      * {{ '@' }}param PaginationInterface|null $pagination
      * {{ '@' }}param SortingInterface|null $sorting
      * {{ '@' }}return Collection|LengthAwarePaginator|{{ $entityName }}[]
      */
     public function all(
-        FilterInterface $filter,
+        {{ $entityName }}Filter $filter,
         ?PaginationInterface $pagination = null,
         ?SortingInterface $sorting = null
     );

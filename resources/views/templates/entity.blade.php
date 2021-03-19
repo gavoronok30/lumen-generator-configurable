@@ -101,15 +101,12 @@ class {{ $entityName }} extends Model
         '{{ $field }}',
 @endforeach
     ];
-
 @foreach($relationFields as $index => $relation)
-@if($index)
 
-@endif
     /**
-     * {{ '@' }}return {{ \Illuminate\Support\Str::ucfirst($relation->getType()) }}
+     * {{ '@' }}return {{ $chunk->get('ucfirst', ['text' => $relation->getType()]) }}
      */
-    public function {{ $relation->getField() }}(): {{ \Illuminate\Support\Str::ucfirst($relation->getType()) }}
+    public function {{ $relation->getField() }}(): {{ $chunk->get('ucfirst', ['text' => $relation->getType()]) }}
     {
 @switch($relation->getType())
 @case('belongsToMany')

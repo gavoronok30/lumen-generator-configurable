@@ -26,9 +26,6 @@ use App\Application\{{ $entityName }}\Update{{ $entityName }};
 @if($data->getControllerList()->isEnable())
 use App\Domain\{{ $entityName }}\{{ $entityName }}Filter;
 @endif
-@if($data->getControllerCreate()->isEnable() || $data->getControllerUpdate()->isEnable() || $data->getControllerList()->isEnable())
-use App\Helpers\StringConvertHelper;
-@endif
 use App\Http\Controllers\Controller;
 @if($data->getResponse()->isEnable() && ($data->getControllerCreate()->isEnable() || $data->getControllerUpdate()->isEnable() || $data->getControllerList()->isEnable() || $data->getControllerById()->isEnable()))
 use App\Http\Resources\{{ $entityName }}\{{ $entityName }}Resource;
@@ -172,7 +169,7 @@ class {{ $entityName }}Controller extends Controller
 @if($field->isRequired())
         ${{ \Illuminate\Support\Str::camel($field->getRelationEntity()) }} = $this->execute(
             new Get{{ $field->getRelationEntity() }}ById(
-                StringConvertHelper::toInteger($request->input('{{ $field->getVariable() }}'), 0)
+                $request->input('{{ $field->getVariable() }}')
             )
         );
 @else
@@ -180,7 +177,7 @@ class {{ $entityName }}Controller extends Controller
         if ($request->input('{{ $field->getVariable() }}')) {
             ${{ \Illuminate\Support\Str::camel($field->getRelationEntity()) }} = $this->execute(
                 new Get{{ $field->getRelationEntity() }}ById(
-                    StringConvertHelper::toInteger($request->input('{{ $field->getVariable() }}'), 0),
+                    $request->input('{{ $field->getVariable() }}'),
                     false
                 )
             );
@@ -195,26 +192,26 @@ class {{ $entityName }}Controller extends Controller
 @if($field->isRelation())
                 ${{ \Illuminate\Support\Str::camel($field->getRelationEntity()) }}{{ !$last ? ',' : '' }}
 @elseif($field->isMultiLanguage())
-                StringConvertHelper::toArray($request->input('{{ $field->getVariable() }}'), []){{ !$last ? ',' : '' }}
+                $request->input('{{ $field->getVariable() }}'){{ !$last ? ',' : '' }}
 @else
 @switch($field->getType())
 @case('int')
-                StringConvertHelper::toInteger($request->input('{{ $field->getVariable() }}')){{ !$last ? ',' : '' }}
+                $request->input('{{ $field->getVariable() }}'){{ !$last ? ',' : '' }}
 @break
 @case('float')
-                StringConvertHelper::toFloat($request->input('{{ $field->getVariable() }}')){{ !$last ? ',' : '' }}
+                $request->input('{{ $field->getVariable() }}'){{ !$last ? ',' : '' }}
 @break
 @case('bool')
-                StringConvertHelper::toBoolean($request->input('{{ $field->getVariable() }}')){{ !$last ? ',' : '' }}
+                $request->input('{{ $field->getVariable() }}'){{ !$last ? ',' : '' }}
 @break
 @case('array')
-                StringConvertHelper::toArray($request->input('{{ $field->getVariable() }}'), []){{ !$last ? ',' : '' }}
+                $request->input('{{ $field->getVariable() }}'){{ !$last ? ',' : '' }}
 @break
 @case('Carbon')
-                StringConvertHelper::toCarbonByFormat($request->input('{{ $field->getVariable() }}')){{ !$last ? ',' : '' }}
+                $request->input('{{ $field->getVariable() }}'){{ !$last ? ',' : '' }}
 @break
 @default
-                StringConvertHelper::toString($request->input('{{ $field->getVariable() }}')){{ !$last ? ',' : '' }}
+                $request->input('{{ $field->getVariable() }}'){{ !$last ? ',' : '' }}
 @endswitch
 @endif
 @endforeach
@@ -280,7 +277,7 @@ class {{ $entityName }}Controller extends Controller
 @if($field->isRequired())
         ${{ \Illuminate\Support\Str::camel($field->getRelationEntity()) }} = $this->execute(
             new Get{{ $field->getRelationEntity() }}ById(
-                StringConvertHelper::toInteger($request->input('{{ $field->getVariable() }}'), 0)
+                $request->input('{{ $field->getVariable() }}')
             )
         );
 @else
@@ -288,7 +285,7 @@ class {{ $entityName }}Controller extends Controller
         if ($request->input('{{ $field->getVariable() }}')) {
             ${{ \Illuminate\Support\Str::camel($field->getRelationEntity()) }} = $this->execute(
                 new Get{{ $field->getRelationEntity() }}ById(
-                    StringConvertHelper::toInteger($request->input('{{ $field->getVariable() }}'), 0),
+                    $request->input('{{ $field->getVariable() }}'),
                     false
                 )
             );
@@ -304,26 +301,26 @@ class {{ $entityName }}Controller extends Controller
 @if($field->isRelation())
                 ${{ \Illuminate\Support\Str::camel($field->getRelationEntity()) }}{{ !$last ? ',' : '' }}
 @elseif($field->isMultiLanguage())
-                StringConvertHelper::toArray($request->input('{{ $field->getVariable() }}'), []){{ !$last ? ',' : '' }}
+                $request->input('{{ $field->getVariable() }}'){{ !$last ? ',' : '' }}
 @else
 @switch($field->getType())
 @case('int')
-                StringConvertHelper::toInteger($request->input('{{ $field->getVariable() }}')){{ !$last ? ',' : '' }}
+                $request->input('{{ $field->getVariable() }}'){{ !$last ? ',' : '' }}
 @break
 @case('float')
-                StringConvertHelper::toFloat($request->input('{{ $field->getVariable() }}')){{ !$last ? ',' : '' }}
+                $request->input('{{ $field->getVariable() }}'){{ !$last ? ',' : '' }}
 @break
 @case('bool')
-                StringConvertHelper::toBoolean($request->input('{{ $field->getVariable() }}')){{ !$last ? ',' : '' }}
+                $request->input('{{ $field->getVariable() }}'){{ !$last ? ',' : '' }}
 @break
 @case('array')
-                StringConvertHelper::toArray($request->input('{{ $field->getVariable() }}'), []){{ !$last ? ',' : '' }}
+                $request->input('{{ $field->getVariable() }}'){{ !$last ? ',' : '' }}
 @break
 @case('Carbon')
-                StringConvertHelper::toCarbonByFormat($request->input('{{ $field->getVariable() }}')){{ !$last ? ',' : '' }}
+                $request->input('{{ $field->getVariable() }}'){{ !$last ? ',' : '' }}
 @break
 @default
-                StringConvertHelper::toString($request->input('{{ $field->getVariable() }}')){{ !$last ? ',' : '' }}
+                $request->input('{{ $field->getVariable() }}'){{ !$last ? ',' : '' }}
 @endswitch
 @endif
 @endforeach

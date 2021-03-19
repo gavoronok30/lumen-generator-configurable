@@ -14,8 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
  * Class Eloquent{{ $entityName }}Repository
  * {{ '@' }}package App\Infrastructure\PostgresRepository
  */
-class Eloquent{{ $entityName }}Repository extends EloquentDatabaseRepository implements
-    {{ $entityName }}RepositoryInterface
+class Eloquent{{ $entityName }}Repository implements {{ $entityName }}RepositoryInterface
 {
     /**
      * {{ '@' }}inheritDoc
@@ -26,7 +25,7 @@ class Eloquent{{ $entityName }}Repository extends EloquentDatabaseRepository imp
 @if(!$field->isSortable())
 @continue;
 @endif
-        '{{ \Illuminate\Support\Str::camel($field->getField()) }}' => '{{ $field->getField() }}',
+        '{{ $chunk->get('camel', ['text' => $field->getField()]) }}' => '{{ $field->getField() }}',
 @endforeach
 @if($data->getEntity()->getDeletedAt())
         'deletedAt' => 'deleted_at',
@@ -51,7 +50,7 @@ class Eloquent{{ $entityName }}Repository extends EloquentDatabaseRepository imp
      * {{ '@' }}param Builder $builder
      * {{ '@' }}param {{ $entityName }}Filter|FilterInterface|null $filter
      */
-    protected function filter(Builder $builder, FilterInterface $filter = null): void
+    protected function filter(Builder $builder, ?FilterInterface $filter = null): void
     {
         if (!$filter) {
             return;
@@ -59,47 +58,47 @@ class Eloquent{{ $entityName }}Repository extends EloquentDatabaseRepository imp
 
 @foreach($filterFields as $field)
 @if(substr($field->getName(), -4) == 'From' && $field->getType() == 'Carbon')
-        if ($filter->get{{ \Illuminate\Support\Str::ucfirst($field->getName()) }}()) {
-            $builder->where('{{ $field->getField() }}', '>=', $filter->get{{ \Illuminate\Support\Str::ucfirst($field->getName()) }}()->startOfDay()->toDateTimeString());
+        if ($filter->get{{ $chunk->get('ucfirst', ['text' => $field->getName()]) }}()) {
+            $builder->where('{{ $field->getField() }}', '>=', $filter->get{{ $chunk->get('ucfirst', ['text' => $field->getName()]) }}()->startOfDay()->toDateTimeString());
         }
 @elseif(substr($field->getName(), -2) == 'To' && $field->getType() == 'Carbon')
-        if ($filter->get{{ \Illuminate\Support\Str::ucfirst($field->getName()) }}()) {
-            $builder->where('{{ $field->getField() }}', '<=', $filter->get{{ \Illuminate\Support\Str::ucfirst($field->getName()) }}()->endOfDay()->toDateTimeString());
+        if ($filter->get{{ $chunk->get('ucfirst', ['text' => $field->getName()]) }}()) {
+            $builder->where('{{ $field->getField() }}', '<=', $filter->get{{ $chunk->get('ucfirst', ['text' => $field->getName()]) }}()->endOfDay()->toDateTimeString());
         }
 @else
 @switch($field->getOperator())
 @case('Carbon')
-        if ($filter->get{{ \Illuminate\Support\Str::ucfirst($field->getName()) }}()) {
-            $builder->where('{{ $field->getField() }}', '{!! $field->getOperator() !!}', $filter->get{{ \Illuminate\Support\Str::ucfirst($field->getName()) }}()->toDateTimeString());
+        if ($filter->get{{ $chunk->get('ucfirst', ['text' => $field->getName()]) }}()) {
+            $builder->where('{{ $field->getField() }}', '{!! $field->getOperator() !!}', $filter->get{{ $chunk->get('ucfirst', ['text' => $field->getName()]) }}()->toDateTimeString());
         }
 @break;
 @case('like')
-        if ($filter->get{{ \Illuminate\Support\Str::ucfirst($field->getName()) }}()) {
-            $builder->where('{{ $field->getField() }}', self::OPERATOR_LIKE, sprintf('%%%s%%', $filter->get{{ \Illuminate\Support\Str::ucfirst($field->getName()) }}()));
+        if ($filter->get{{ $chunk->get('ucfirst', ['text' => $field->getName()]) }}()) {
+            $builder->where('{{ $field->getField() }}', self::OPERATOR_LIKE, sprintf('%%%s%%', $filter->get{{ $chunk->get('ucfirst', ['text' => $field->getName()]) }}()));
         }
 @break;
 @case('not like')
-        if ($filter->get{{ \Illuminate\Support\Str::ucfirst($field->getName()) }}()) {
-            $builder->where('{{ $field->getField() }}', 'not ilike', sprintf('%%%s%%', $filter->get{{ \Illuminate\Support\Str::ucfirst($field->getName()) }}()));
+        if ($filter->get{{ $chunk->get('ucfirst', ['text' => $field->getName()]) }}()) {
+            $builder->where('{{ $field->getField() }}', 'not ilike', sprintf('%%%s%%', $filter->get{{ $chunk->get('ucfirst', ['text' => $field->getName()]) }}()));
         }
 @break;
 @case('in')
-        if ($filter->get{{ \Illuminate\Support\Str::ucfirst($field->getName()) }}()) {
-            $builder->whereIn('{{ $field->getField() }}', $filter->get{{ \Illuminate\Support\Str::ucfirst($field->getName()) }}());
+        if ($filter->get{{ $chunk->get('ucfirst', ['text' => $field->getName()]) }}()) {
+            $builder->whereIn('{{ $field->getField() }}', $filter->get{{ $chunk->get('ucfirst', ['text' => $field->getName()]) }}());
         }
 @break;
 @case('not in')
-        if ($filter->get{{ \Illuminate\Support\Str::ucfirst($field->getName()) }}()) {
-            $builder->whereNotIn('{{ $field->getField() }}', $filter->get{{ \Illuminate\Support\Str::ucfirst($field->getName()) }}());
+        if ($filter->get{{ $chunk->get('ucfirst', ['text' => $field->getName()]) }}()) {
+            $builder->whereNotIn('{{ $field->getField() }}', $filter->get{{ $chunk->get('ucfirst', ['text' => $field->getName()]) }}());
         }
 @break;
 @default
 @if($field->getType() == 'bool')
-        if (!is_null($filter->get{{ \Illuminate\Support\Str::ucfirst($field->getName()) }}())) {
+        if (!is_null($filter->get{{ $chunk->get('ucfirst', ['text' => $field->getName()]) }}())) {
 @else
-        if ($filter->get{{ \Illuminate\Support\Str::ucfirst($field->getName()) }}()) {
+        if ($filter->get{{ $chunk->get('ucfirst', ['text' => $field->getName()]) }}()) {
 @endif
-            $builder->where('{{ $field->getField() }}', '{!! $field->getOperator() !!}', $filter->get{{ \Illuminate\Support\Str::ucfirst($field->getName()) }}());
+            $builder->where('{{ $field->getField() }}', '{!! $field->getOperator() !!}', $filter->get{{ $chunk->get('ucfirst', ['text' => $field->getName()]) }}());
         }
 @endswitch
 @endif

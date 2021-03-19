@@ -13,6 +13,11 @@ use Illuminate\Support\Collection;
 class GeneratorServiceRenderMigration extends GeneratorServiceRenderAbstract
 {
     /**
+     * @inheritDoc
+     */
+    protected string $context = GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_MIGRATION;
+
+    /**
      * @param GeneratorServiceData $data
      * @param GeneratorServiceDataFileRequest[]|Collection $files
      */
@@ -24,6 +29,8 @@ class GeneratorServiceRenderMigration extends GeneratorServiceRenderAbstract
             'table' => $data->getEntity()->getTable(),
             'migrationFields' => $data->getMigration()->getFields(),
         ];
+
+        $this->addExtraVariables($data);
 
         $files->map(
             function (GeneratorServiceDataFileRequest $file) use ($data) {

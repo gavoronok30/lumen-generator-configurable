@@ -31,7 +31,7 @@
  * {{ '@' }}apiParam {{ '{' }}{{ $field->getTextFormatType() }}{{ '}' }} [filter[{{ $field->getName() }}]] Filter by {{ \Illuminate\Support\Str::of(\Illuminate\Support\Str::snake($field->getField()))->replace('_', ' ') }}{{ $field->getType() == 'Carbon' ? ' (format: Y-m-d)' : '' }}
 @endforeach
  * {{ '@' }}apiUse ParamPagination
- * {{ '@' }}apiParam {string} [sort] Sorting for field, allowed: {{ $sortableFields->implode(', ') }}
+ * {{ '@' }}apiParam {string} [sort] Sorting for field, allowed: {{ $sortableFields->map(function($value){return \Illuminate\Support\Str::camel($value);})->implode(', ') }}
  *
  * {{ '@' }}apiParamExample {string} query
 @foreach($filterFields as $index => $field)

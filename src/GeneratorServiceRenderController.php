@@ -15,6 +15,11 @@ use Illuminate\Support\Collection;
 class GeneratorServiceRenderController extends GeneratorServiceRenderAbstract
 {
     /**
+     * @inheritDoc
+     */
+    protected string $context = GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_CONTROLLER;
+
+    /**
      * @param GeneratorServiceData $data
      * @param GeneratorServiceDataFileRequest[]|Collection $files
      */
@@ -35,6 +40,8 @@ class GeneratorServiceRenderController extends GeneratorServiceRenderAbstract
             'controllerCreateFields' => $this->getFieldsForControllerCreate($data),
             'controllerUpdateFields' => $this->getFieldsForControllerUpdate($data),
         ];
+
+        $this->addExtraVariables($data);
 
         $files->map(
             function (GeneratorServiceDataFileRequest $file) use ($data) {

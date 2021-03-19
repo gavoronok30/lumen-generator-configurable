@@ -1,12 +1,14 @@
 <?php
 
+use Gavoronok30\LaravelGeneratorConfigurable\GeneratorServiceInterface;
+
 return [
     'enable' => env('GENERATOR_ENABLE', false),
     'templates' => resource_path('views/vendor/laravel-generator-configurable/templates/'),
     'testMode' => env('GENERATOR_TEST_MODE', true),
     'testFolder' => storage_path('generator/'),
     'customFiles' => [
-        'entity' => [
+        GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_ENTITY => [
             [
                 'template' => 'entity.blade.php',
                 'outputFile' => 'app/Domain/%/%.php',
@@ -30,7 +32,7 @@ return [
                 'format' => 'text',
             ],
         ],
-        'migration' => [
+        GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_MIGRATION => [
             [
                 'template' => 'migration.blade.php',
                 'outputFile' => 'database/migrations/%migrationDate%_create_%.php',
@@ -40,7 +42,7 @@ return [
                 'outputFile' => 'database/migrations/%migrationDate%_create_%.php',
             ],
         ],
-        'seeder' => [
+        GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_SEEDER => [
             [
                 'template' => 'seeder.blade.php',
                 'outputFile' => 'database/seeders/%TableSeeder.php',
@@ -52,7 +54,7 @@ return [
                 'format' => 'text',
             ],
         ],
-        'response' => [
+        GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_RESPONSE => [
             [
                 'template' => 'response_resource.blade.php',
                 'outputFile' => 'app/Http/Resources/%/%Resource.php',
@@ -62,13 +64,13 @@ return [
                 'outputFile' => 'app/Http/Resources/%/%ResourceCollection.php',
             ],
         ],
-        'controller' => [
+        GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_CONTROLLER => [
             [
                 'template' => 'controller.blade.php',
                 'outputFile' => 'app/Http/Controllers/%contextPath%%Controller.php',
             ],
         ],
-        'controllerList' => [
+        GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_CONTROLLER_LIST => [
             [
                 'template' => 'controller_list_command.blade.php',
                 'outputFile' => 'app/Application/%/Get%List.php',
@@ -78,7 +80,7 @@ return [
                 'outputFile' => 'app/Application/%/Get%ListHandler.php',
             ],
         ],
-        'controllerById' => [
+        GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_CONTROLLER_BY_ID => [
             [
                 'template' => 'controller_by_id_command.blade.php',
                 'outputFile' => 'app/Application/%/Get%ById.php',
@@ -88,7 +90,7 @@ return [
                 'outputFile' => 'app/Application/%/Get%ByIdHandler.php',
             ],
         ],
-        'controllerCreate' => [
+        GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_CONTROLLER_CREATE => [
             [
                 'template' => 'controller_create_command.blade.php',
                 'outputFile' => 'app/Application/%/Register%.php',
@@ -98,7 +100,7 @@ return [
                 'outputFile' => 'app/Application/%/Register%Handler.php',
             ],
         ],
-        'controllerUpdate' => [
+        GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_CONTROLLER_UPDATE => [
             [
                 'template' => 'controller_update_command.blade.php',
                 'outputFile' => 'app/Application/%/Update%.php',
@@ -108,7 +110,7 @@ return [
                 'outputFile' => 'app/Application/%/Update%Handler.php',
             ],
         ],
-        'controllerDelete' => [
+        GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_CONTROLLER_DELETE => [
             [
                 'template' => 'controller_delete_command.blade.php',
                 'outputFile' => 'app/Application/%/Delete%.php',
@@ -118,7 +120,7 @@ return [
                 'outputFile' => 'app/Application/%/Delete%Handler.php',
             ],
         ],
-        'route' => [
+        GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_ROUTE => [
             [
                 'template' => 'route.blade.php',
                 'outputFile' => 'routes/%context%.php',
@@ -126,19 +128,29 @@ return [
                 'format' => 'text',
             ],
         ],
-        'test' => [
+        GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_TEST => [
             [
                 'template' => 'test.blade.php',
                 'outputFile' => 'tests/%contextPath%%context%%Test.php',
             ],
         ],
-        'apiDoc' => [
+        GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_API_DOC => [
             [
                 'template' => 'api_doc.blade.php',
                 'outputFile' => 'api-doc/%contextPath%%.js',
                 'format' => 'text',
             ],
         ],
+    ],
+    'variables' => [
+        GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_ENTITY => null,
+        GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_CONTROLLER => null,
+        GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_RESPONSE => null,
+        GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_ROUTE => null,
+        GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_MIGRATION => null,
+        GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_SEEDER => null,
+        GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_TEST => null,
+        GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_API_DOC => null,
     ],
     'fieldTypeAliases' => [
         'integer' => 'int',

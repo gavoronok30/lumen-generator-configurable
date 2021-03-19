@@ -13,6 +13,11 @@ use Illuminate\Support\Collection;
 class GeneratorServiceRenderResponse extends GeneratorServiceRenderAbstract
 {
     /**
+     * @inheritDoc
+     */
+    protected string $context = GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_RESPONSE;
+
+    /**
      * @param GeneratorServiceData $data
      * @param GeneratorServiceDataFileRequest[]|Collection $files
      */
@@ -25,6 +30,8 @@ class GeneratorServiceRenderResponse extends GeneratorServiceRenderAbstract
             'responseFields' => $this->getFieldsForResponse($data),
             'relationFields' => $this->getRelationFieldsFromEntity($data->getEntity()),
         ];
+
+        $this->addExtraVariables($data);
 
         $files->map(
             function (GeneratorServiceDataFileRequest $file) use ($data) {

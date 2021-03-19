@@ -14,6 +14,11 @@ use Illuminate\Support\Collection;
 class GeneratorServiceRenderSeeder extends GeneratorServiceRenderAbstract
 {
     /**
+     * @inheritDoc
+     */
+    protected string $context = GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_SEEDER;
+
+    /**
      * @param GeneratorServiceData $data
      * @param GeneratorServiceDataFileRequest[]|Collection $files
      */
@@ -28,6 +33,8 @@ class GeneratorServiceRenderSeeder extends GeneratorServiceRenderAbstract
             'seederFields' => $this->getFields($data),
             'relationFields' => $this->getRelationFieldsFromEntity($data->getEntity()),
         ];
+
+        $this->addExtraVariables($data);
 
         $files->map(
             function (GeneratorServiceDataFileRequest $file) use ($data) {

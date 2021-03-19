@@ -14,6 +14,11 @@ use Illuminate\Support\Str;
 class GeneratorServiceRenderApiDoc extends GeneratorServiceRenderAbstract
 {
     /**
+     * @inheritDoc
+     */
+    protected string $context = GeneratorServiceInterface::CUSTOM_FILE_CONTEXT_API_DOC;
+
+    /**
      * @param GeneratorServiceData $data
      * @param GeneratorServiceDataFileRequest[]|Collection $files
      */
@@ -34,6 +39,8 @@ class GeneratorServiceRenderApiDoc extends GeneratorServiceRenderAbstract
             'controllerUpdateFields' => $this->getFieldsForControllerUpdate($data),
             'sortableFields' => $this->getSortableFieldsFromEntity($data),
         ];
+
+        $this->addExtraVariables($data);
 
         $files->map(
             function (GeneratorServiceDataFileRequest $file) use ($data) {
