@@ -73,7 +73,7 @@ class GeneratorCommand extends Command
      */
     private function copyConfig(): void
     {
-        if (file_exists(base_path('config/generator/config.php'))) {
+        if (file_exists(base_path('config/generator.php'))) {
             $this->info('Config file skipped');
             return;
         }
@@ -98,8 +98,8 @@ class GeneratorCommand extends Command
         if (!file_exists($to)) {
             mkdir($to, 0755, true);
         }
-        $from = trim($from, '/') . '/';
-        $to = trim($to, '/') . '/';
+        $from = rtrim($from, '/') . '/';
+        $to = rtrim($to, '/') . '/';
         foreach (scandir($from) as $file) {
             if (!is_file($from . $file)) {
                 continue;
