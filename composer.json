@@ -2,12 +2,25 @@
     "name": "gavoronok30/laravel-generator-configurable",
     "description": "laravel code generation",
     "type": "library",
-    "license": "LGPL-3.0-or-later",
+    "version": "1.0.2",
+    "license": "MIT",
     "authors": [
         {
-            "name": "gavoronok30",
-            "email": "gavoronok30@gmail.com"
+            "name": "Gavoronok30",
+            "email": "gavoronok30@gmail.com",
+            "role": "Developer"
+        },
+        {
+            "name": "IT Dev Group",
+            "email": "info@it-devgroup.com",
+            "role": "Provider"
         }
+    ],
+    "keywords": [
+        "laravel",
+        "lumen",
+        "generator",
+        "it-devgroup"
     ],
     "require": {
         "php": "^7.4|^8.0",
